@@ -1,2 +1,8 @@
+macos/** linguist-vendored
+windows/** linguist-vendored
+linux/** linguist-vendored
+web/** linguist-vendored
+build/** linguist-vendored
+
 .dart_tool/** linguist-generated
 .flutter-plugins-dependencies linguist-generated
