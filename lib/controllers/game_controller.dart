@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import '../models/card_model.dart';
+import '../models/game_record.dart';
+import '../database/database_helper.dart';
 
 class GameController {
   final List<String> imagePaths;
@@ -12,6 +14,11 @@ class GameController {
   bool timerStarted = false;
   int secondsPassed = 0;
   Timer? _timer;
+
+  // 時間上限
+  static const int maxSeconds = 10 * 60;
+
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
 
   GameController({required this.imagePaths}) {
     resetGame();
@@ -39,7 +46,27 @@ class GameController {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       secondsPassed++;
       onTick();
+
+      if (secondsPassed >= maxSeconds) {
+        _handleTimeUp();
+      }
     });
+  }
+
+  // 時間到達自動歸零並翻回卡牌
+  void _handleTimeUp() {
+
+    stopTimer();
+    secondsPassed = 0;
+    
+    for (var card in cards) {
+      card.isFlipped = false;
+      card.isMatched = false;
+    }
+    
+    // 重置遊戲狀態
+    firstFlippedIndex = null;
+    isBusy = false;
   }
 
   void stopTimer() {
@@ -79,9 +106,22 @@ class GameController {
       updateUI();
     }
 
-    // 遊戲結束 → 停止計時
+    // 遊戲結束:停止計時並儲存記錄
     if (cards.every((c) => c.isMatched)) {
       stopTimer();
+      await _saveGameRecord();
     }
+  }
+
+  Future<void> _saveGameRecord() async {
+    final record = GameRecord(
+      dateTime: DateTime.now(),
+      secondsSpent: secondsPassed,
+    );
+    await _databaseHelper.insertGameRecord(record);
+  }
+
+  void dispose() {
+    _timer?.cancel();
   }
 }

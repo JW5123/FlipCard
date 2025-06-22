@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
-import 'pages/game_page.dart';
+import 'package:flutter/services.dart';
+import 'pages/main_page.dart';
 
-void main() => runApp(const FlipCardGameApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  
+  runApp(const FlipCardGameApp());
+}
 
 class FlipCardGameApp extends StatelessWidget {
   const FlipCardGameApp({super.key});
@@ -9,10 +19,24 @@ class FlipCardGameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '翻牌遊戲',
+      title: '翻牌記憶',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.teal),
-      home: const FlipCardGamePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        useMaterial3: true,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.teal.shade50,
+          foregroundColor: Colors.teal.shade800,
+          elevation: 0,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.teal,
+            foregroundColor: Colors.white,
+          ),
+        ),
+      ),
+      home: const MainPage(),
     );
   }
 }
