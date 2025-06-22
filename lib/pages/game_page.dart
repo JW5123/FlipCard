@@ -123,7 +123,6 @@ class _FlipCardGamePageState extends State<FlipCardGamePage> {
       body: Column(
         children: [
           const SizedBox(height: 16),
-          // 時間顯示
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -149,8 +148,7 @@ class _FlipCardGamePageState extends State<FlipCardGamePage> {
             ),
           ),
           const SizedBox(height: 5),
-          
-          // 遊戲網格
+
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
@@ -207,7 +205,6 @@ class _FlipCardGamePageState extends State<FlipCardGamePage> {
             ),
           ),
           
-          // 重新開始按鈕
           Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: ElevatedButton.icon(
