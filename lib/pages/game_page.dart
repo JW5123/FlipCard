@@ -154,6 +154,7 @@ class _FlipCardGamePageState extends State<FlipCardGamePage> {
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.all(16),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: controller.cards.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -208,7 +209,7 @@ class _FlipCardGamePageState extends State<FlipCardGamePage> {
           
           // 重新開始按鈕
           Padding(
-            padding: const EdgeInsets.only(bottom: 18.0),
+            padding: const EdgeInsets.only(bottom: 10.0),
             child: ElevatedButton.icon(
               onPressed: () {
                 setState(() {
